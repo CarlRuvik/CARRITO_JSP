@@ -1,11 +1,13 @@
 package Servlets;
 
+import Controlador.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class VerificarUsuario extends HttpServlet {
 
@@ -21,15 +23,31 @@ public class VerificarUsuario extends HttpServlet {
             srvusername=request.getParameter("txtUsuario");
             srvpassword=request.getParameter("txtPassword");
             
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet VerificarUsuario</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet VerificarUsuario at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            //Instanciamos al usuario
+            Usuario usuario=new Usuario();
+            usuario.VerificarUsuario(srvusername, srvpassword);
+            
+            //Ahora verificaremos si el usuario es cliente o administrador
+            if(usuario!=null)//Será diferente de null si el usuario existe en la BD
+            {
+                //Usaremos el manejo de sesiones
+                HttpSession sesion=request.getSession(true);
+                sesion.setAttribute("Usuario", usuario);
+                
+                //Manjeamos una segunda sesión para verificar quien es:
+                HttpSession sesionOK=request.getSession();
+                sesionOK.setAttribute("Usuario", srvusername);
+                
+                //Ahora debemos reconocerlo:
+                if(usuario.getPrivilegio_usuario()==0)//Si el no. de privilegio es 0 entonces el usuario es cliente
+                {
+                    response.sendRedirect("MostrarProductosCliente.jsp");
+                }
+                else//Si no, entonces el usuario es un administrador
+                {
+                    response.sendRedirect("MostrarProductosAdmin.jsp");
+                }
+            }
         }
     }
 
