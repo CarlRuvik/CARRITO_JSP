@@ -48,6 +48,10 @@ public class VerificarUsuario extends HttpServlet {
                     response.sendRedirect("MostrarProductosAdmin.jsp");
                 }
             }
+            else//Si el usuario no existe o la contraseña es erronea
+            {
+                response.sendRedirect("Error.jsp");
+            }
         }
     }
 
