@@ -48,7 +48,7 @@
             </tr>
             <tr align="center">
                 <td colspan="2">
-                    <h4><a>Ver lista de productos</a> | <a>Ir a mi carrito de compras</a> | <a>Cerrar sesión</a></h4>
+                    <h4><a href="MostrarProductos.jsp">Ver lista de productos</a> | <a href="AgregarAlCarrito1.jsp">Agregar al carrito de compras</a> | <a>Cerrar sesión</a></h4>
                 </td>     
             </tr>
             <tr>
